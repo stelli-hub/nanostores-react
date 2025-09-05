@@ -1,5 +1,5 @@
 import { listenKeys } from 'nanostores'
-import { useCallback, useRef, useSyncExternalStore } from 'react'
+import * as React from 'react'
 
 const emit = (snapshotRef, onChange) => value => {
   if (snapshotRef.current === value) return
@@ -8,10 +8,10 @@ const emit = (snapshotRef, onChange) => value => {
 }
 
 export function useStore(store, { keys, deps = [store, keys] } = {}) {
-  let snapshotRef = useRef()
+  let snapshotRef = React.useRef()
   snapshotRef.current = store.get()
 
-  let subscribe = useCallback(onChange => {
+  let subscribe = React.useCallback(onChange => {
     emit(snapshotRef, onChange)(store.value)
 
     return keys?.length > 0
@@ -20,5 +20,5 @@ export function useStore(store, { keys, deps = [store, keys] } = {}) {
   }, deps)
   let get = () => snapshotRef.current
 
-  return useSyncExternalStore(subscribe, get, () => store.get())
+  return React.useSyncExternalStore(subscribe, get, () => store.get())
 }
