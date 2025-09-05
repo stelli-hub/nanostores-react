@@ -1,7 +1,7 @@
 import { listenKeys } from 'nanostores'
 import { useCallback, useRef, useSyncExternalStore } from 'react'
 
-let emit = (snapshotRef, onChange) => value => {
+const emit = (snapshotRef, onChange) => value => {
   if (snapshotRef.current === value) return
   snapshotRef.current = value
   onChange()
@@ -20,5 +20,5 @@ export function useStore(store, { keys, deps = [store, keys] } = {}) {
   }, deps)
   let get = () => snapshotRef.current
 
-  return useSyncExternalStore(subscribe, get, get)
+  return useSyncExternalStore(subscribe, get, () => store.get())
 }

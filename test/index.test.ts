@@ -242,3 +242,4 @@ test('useSyncExternalStore late subscription handling', () => {
 
   equal(screen.getByTestId('subscription-test').textContent, 'updated content')
 })
+
